@@ -2,6 +2,7 @@
 using SchoolProject.Data.Entities;
 using SchoolProject.Infrastructure.Abstract;
 using SchoolProject.Infrastructure.Data;
+using SchoolProject.Infrastructure.InfrastructureBases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +11,23 @@ using System.Threading.Tasks;
 
 namespace SchoolProject.Infrastructure.Repositories
 {
-    public class StudentRepository : IStudentRepository
+    public class StudentRepository :GenericRepositoryAsync<Student>, IStudentRepository
     {
         #region Fields
-        private readonly ApplicationDbContext _context;
+        private readonly DbSet<Student> _studentsRepository;
         #endregion
 
         #region Ctor
-        public StudentRepository(ApplicationDbContext context)
+        public StudentRepository(ApplicationDbContext context): base(context)
         {
-            _context = context;
+            _studentsRepository = context.Set<Student>();
         }
         #endregion
 
         #region Methods
         public async Task<List<Student>> GetStudentsListAsync()
         {
-            return await _context.Students.Include(x=>x.Department).ToListAsync();
+            return await _studentsRepository.Include(x=>x.Department).ToListAsync();
         }
         #endregion
 

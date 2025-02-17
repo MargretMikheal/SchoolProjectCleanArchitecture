@@ -8,7 +8,7 @@ using SchoolProject.Service.Abstract;
 
 namespace SchoolProject.Core.Features.Students.Queries.Handlers
 {
-    public class StudentHandler :ResponseHandler, IRequestHandler<GetStudentListQuery,Response<List<GetStudentListResponse>>>
+    public class StudentQueryHandler :ResponseHandler, IRequestHandler<GetStudentListQuery,Response<List<GetStudentListResponse>>>
     {
         #region Fields
         private readonly IStudentService _studentService;
@@ -16,7 +16,7 @@ namespace SchoolProject.Core.Features.Students.Queries.Handlers
         #endregion
 
         #region Ctor
-        public StudentHandler(IStudentService studentService,IMapper mapper)
+        public StudentQueryHandler(IStudentService studentService,IMapper mapper)
         {
             _studentService = studentService;
             _mapper = mapper;
