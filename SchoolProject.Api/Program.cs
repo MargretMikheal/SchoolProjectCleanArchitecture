@@ -1,10 +1,11 @@
 
 using Microsoft.EntityFrameworkCore;
-using SchoolProject.Infrastructure.Data;
-using SchoolProject.Infrastructure;
-using SchoolProject.Service;
-using SchoolProject.Core;
 using Microsoft.OpenApi.Models;
+using SchoolProject.Core;
+using SchoolProject.Core.MiddleWare;
+using SchoolProject.Infrastructure;
+using SchoolProject.Infrastructure.Data;
+using SchoolProject.Service;
 
 
 namespace SchoolProject.Api
@@ -19,8 +20,9 @@ namespace SchoolProject.Api
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-           // builder.Services.AddOpenApi();
+            // builder.Services.AddOpenApi();
             builder.Services.AddEndpointsApiExplorer();
+            #region Swagger
             builder.Services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc("v1", new OpenApiInfo
@@ -55,6 +57,7 @@ namespace SchoolProject.Api
                     }
                 });
             });
+            #endregion
 
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -73,10 +76,11 @@ namespace SchoolProject.Api
             if (app.Environment.IsDevelopment())
             {
                 //app.MapOpenApi();
-                app.UseSwagger();         
+                app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

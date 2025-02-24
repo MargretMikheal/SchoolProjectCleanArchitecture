@@ -13,16 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Students\Command\Handlers\" />
-    <Folder Include="Features\Students\Command\Models\" />
-    <Folder Include="Features\Students\Command\" />
-    <Folder Include="Features\Students\Command\Validations\" />
-    <Folder Include="Mapping\Students\CommandMapping\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
   </ItemGroup>
 
 </Project>

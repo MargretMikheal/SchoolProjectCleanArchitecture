@@ -5,10 +5,9 @@ using SchoolProject.Core.Features.Students.Queries.Models;
 using SchoolProject.Core.Features.Students.Queries.Results;
 using SchoolProject.Service.Abstract;
 
-
 namespace SchoolProject.Core.Features.Students.Queries.Handlers
 {
-    public class StudentQueryHandler :ResponseHandler, IRequestHandler<GetStudentListQuery,Response<List<GetStudentListResponse>>>
+    public class StudentQueryHandler : ResponseHandler, IRequestHandler<GetStudentListQuery, Response<List<GetStudentListResponse>>>, IRequestHandler<GetStudentByIdQuery, Response<GetStudentResponse>>
     {
         #region Fields
         private readonly IStudentService _studentService;
@@ -16,12 +15,11 @@ namespace SchoolProject.Core.Features.Students.Queries.Handlers
         #endregion
 
         #region Ctor
-        public StudentQueryHandler(IStudentService studentService,IMapper mapper)
+        public StudentQueryHandler(IStudentService studentService, IMapper mapper)
         {
             _studentService = studentService;
             _mapper = mapper;
         }
-
         #endregion
 
         #region Methods 
@@ -30,10 +28,18 @@ namespace SchoolProject.Core.Features.Students.Queries.Handlers
             var studentList = await _studentService.GetStudentListAsync();
             var studentListMapper = _mapper.Map<List<GetStudentListResponse>>(studentList);
             return Success(studentListMapper);
+        }
 
+        public async Task<Response<GetStudentResponse>> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
+        {
+            var student = await _studentService.GetStudentByIdAsync(request.Id);
+            if (student == null)
+            {
+                return NotFound<GetStudentResponse>();
+            }
+            var studentMapper = _mapper.Map<GetStudentResponse>(student);
+            return Success(studentMapper);
         }
         #endregion
-
     }
-   
 }

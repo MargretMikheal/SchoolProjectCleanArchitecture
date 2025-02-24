@@ -50,6 +50,15 @@ namespace SchoolProject.Core.Bases
                 Succeeded = false,
                 Message = Message == null ? "Bad Request" : Message
             };
+        } 
+        public Response<T> UnprocessableEntity<T>(string Message = null)
+        {
+            return new Response<T>()
+            {
+                StatusCode = System.Net.HttpStatusCode.UnprocessableEntity,
+                Succeeded = false,
+                Message = Message == null ? "UnprocessableEntity" : Message
+            };
         }
 
         public Response<T> NotFound<T>(string message = null)
