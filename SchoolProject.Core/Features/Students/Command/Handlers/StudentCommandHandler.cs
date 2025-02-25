@@ -9,6 +9,7 @@ namespace SchoolProject.Core.Features.Students.Command.Handlers
 {
     public class StudentCommandHandler : ResponseHandler, IRequestHandler<AddStudentCommand, Response<string>>
                                                         , IRequestHandler<EditStudentCommand, Response<string>>
+                                                        , IRequestHandler<DeleteStudentCommand, Response<string>>
     {
         #region Fields
         public IStudentService _studentService;
@@ -62,6 +63,24 @@ namespace SchoolProject.Core.Features.Students.Command.Handlers
             {
                 return BadRequest<string>();
             }
+        }
+
+        public async Task<Response<string>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
+        {
+            //check if the student exists
+            var student = await _studentService.GetStudentByIdAsync(request.Id);
+            if (student == null)
+            {
+                return await Task.FromResult(NotFound<string>());
+            }
+            //delete
+            var result = await _studentService.DeleteAsync(student);
+            if (!result)
+            {
+                return await Task.FromResult(BadRequest<string>());
+            }
+            //return response
+            return await Task.FromResult(Deleted<string>());
         }
         #endregion
 

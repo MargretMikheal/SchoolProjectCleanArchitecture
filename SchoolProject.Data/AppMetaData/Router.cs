@@ -13,6 +13,7 @@
             public const string byId = Prefix + "/{id}";
             public const string Add = Prefix + "/AddStudent";
             public const string Edit = Prefix + "/EditStudent";
+            public const string Delete = Prefix + "/{id}";
         }
 
     }

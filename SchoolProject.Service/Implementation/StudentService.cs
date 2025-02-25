@@ -66,6 +66,24 @@ namespace SchoolProject.Service.Implementation
             await _studentRepository.UpdateAsync(studentMapper);
             return "Success";
         }
+
+        public async Task<bool> DeleteAsync(Student student)
+        {
+            //Delete the student from the database
+            var trans = _studentRepository.BeginTransaction();
+            try
+            {
+                await _studentRepository.DeleteAsync(student);
+                await trans.CommitAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                trans.Rollback();
+                return false;
+            }
+
+        }
         #endregion
 
 

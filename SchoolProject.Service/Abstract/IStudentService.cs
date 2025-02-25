@@ -10,5 +10,6 @@ namespace SchoolProject.Service.Abstract
         public Task<bool> IsNameExistAsync(string name);
         public Task<bool> IsNameExistAsyncExcludeSelf(string name, int id);
         public Task<string> EditAsync(Student studentMapper);
+        public Task<bool> DeleteAsync(Student student);
     }
 }
