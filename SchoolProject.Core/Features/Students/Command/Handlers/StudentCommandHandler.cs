@@ -8,6 +8,7 @@ using SchoolProject.Service.Abstract;
 namespace SchoolProject.Core.Features.Students.Command.Handlers
 {
     public class StudentCommandHandler : ResponseHandler, IRequestHandler<AddStudentCommand, Response<string>>
+                                                        , IRequestHandler<EditStudentCommand, Response<string>>
     {
         #region Fields
         public IStudentService _studentService;
@@ -15,7 +16,7 @@ namespace SchoolProject.Core.Features.Students.Command.Handlers
         #endregion
 
         #region Ctor
-        public StudentCommandHandler(IStudentService studentService , IMapper mapper)
+        public StudentCommandHandler(IStudentService studentService, IMapper mapper)
         {
             _studentService = studentService;
             _mapper = mapper;
@@ -26,16 +27,37 @@ namespace SchoolProject.Core.Features.Students.Command.Handlers
         public async Task<Response<string>> Handle(AddStudentCommand request, CancellationToken cancellationToken)
         {
             //mapping Between request and Student
-            var studentMapper= _mapper.Map<Student>(request);
+            var studentMapper = _mapper.Map<Student>(request);
             //add
             var result = await _studentService.AddAsync(studentMapper);
             //return response
-            if(result == "Exists")
+            if (result == "Exists")
             {
                 return UnprocessableEntity<string>();
             }
-            else if(result == "Success")
-            return Created<string>(result);
+            else if (result == "Success")
+                return Created<string>(result);
+            else
+            {
+                return BadRequest<string>();
+            }
+        }
+
+        public async Task<Response<string>> Handle(EditStudentCommand request, CancellationToken cancellationToken)
+        {
+            //check if the student exists
+            var student = await _studentService.GetStudentByIdAsync(request.Id);
+            if (student == null)
+            {
+                return NotFound<string>();
+            }
+            //mapping Between request and Student
+            var studentMapper = _mapper.Map<Student>(request);
+            //edit
+            var result = await _studentService.EditAsync(studentMapper);
+            //return response
+            if (result == "Success")
+                return Success<string>("Student updated successfully", studentMapper);
             else
             {
                 return BadRequest<string>();

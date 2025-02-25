@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SchoolProject.Data.AppMetaData
+﻿namespace SchoolProject.Data.AppMetaData
 {
     public static class Router
     {
@@ -18,6 +12,7 @@ namespace SchoolProject.Data.AppMetaData
             public const string List = Prefix + "/AllStudents";
             public const string byId = Prefix + "/{id}";
             public const string Add = Prefix + "/AddStudent";
+            public const string Edit = Prefix + "/EditStudent";
         }
 
     }

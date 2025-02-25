@@ -49,6 +49,23 @@ namespace SchoolProject.Service.Implementation
             }
             return true;
         }
+
+        public async Task<bool> IsNameExistAsyncExcludeSelf(string name, int id)
+        {
+            var stu = await _studentRepository.GetTableNoTracking().Where(x => x.Name.Equals(name) && !x.StudID.Equals(id)).FirstOrDefaultAsync();
+            if (stu == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public async Task<string> EditAsync(Student studentMapper)
+        {
+            //Edit the student in the database
+            await _studentRepository.UpdateAsync(studentMapper);
+            return "Success";
+        }
         #endregion
 
 

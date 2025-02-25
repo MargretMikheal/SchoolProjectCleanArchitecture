@@ -6,18 +6,18 @@ using SchoolProject.Data.AppMetaData;
 
 namespace SchoolProject.Api.Controllers
 {
-     // [Route("api/[controller]")]
+    // [Route("api/[controller]")]
     [ApiController]
     public class StudentController : AppControllerBase
     {
-           
+
         [HttpGet(Router.StudentRouting.List)]
         public async Task<IActionResult> GetStudentList()
         {
             return NewResult(await _mediator.Send(new GetStudentListQuery()));
         }
         [HttpGet(Router.StudentRouting.byId)]
-        public async Task<IActionResult> GetStudentById([FromRoute]int id)
+        public async Task<IActionResult> GetStudentById([FromRoute] int id)
         {
             return NewResult(await _mediator.Send(new GetStudentByIdQuery(id)));
         }
@@ -26,5 +26,12 @@ namespace SchoolProject.Api.Controllers
         {
             return NewResult(await _mediator.Send(command));
         }
+
+        [HttpPut(Router.StudentRouting.Edit)]
+        public async Task<IActionResult> UpdateStudent([FromBody] EditStudentCommand command)
+        {
+            return NewResult(await _mediator.Send(command));
+        }
+
     }
 }

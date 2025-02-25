@@ -4,13 +4,13 @@ using SchoolProject.Service.Abstract;
 
 namespace SchoolProject.Core.Features.Students.Command.Validations
 {
-    public class StudentValidator : AbstractValidator<AddStudentCommand>
+    public class AddStudentValidator : AbstractValidator<AddStudentCommand>
     {
         #region Fields
         private readonly IStudentService _studentService;
         #endregion
         #region Ctor
-        public StudentValidator(IStudentService studentService)
+        public AddStudentValidator(IStudentService studentService)
         {
             _studentService = studentService;
             ApplyValidationRules();
@@ -35,7 +35,7 @@ namespace SchoolProject.Core.Features.Students.Command.Validations
             RuleFor(x => x.Name).MustAsync(async (name, cancellation) =>
             {
                 return !await _studentService.IsNameExistAsync(name);
-            }).WithMessage("Name must be unique");
+            }).WithMessage("Exists");
         }
         #endregion
     }
