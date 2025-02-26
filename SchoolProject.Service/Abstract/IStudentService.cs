@@ -1,4 +1,5 @@
 ﻿using SchoolProject.Data.Entities;
+using SchoolProject.Data.Helper.Enums;
 
 namespace SchoolProject.Service.Abstract
 {
@@ -11,5 +12,7 @@ namespace SchoolProject.Service.Abstract
         public Task<bool> IsNameExistAsyncExcludeSelf(string name, int id);
         public Task<string> EditAsync(Student studentMapper);
         public Task<bool> DeleteAsync(Student student);
+        public IQueryable<Student> GetPaginatedStudentListAsync();
+        public IQueryable<Student> FilterStudentPaginatedQuerable(StudentOrderingEnum? orderingEnum, string search);
     }
 }

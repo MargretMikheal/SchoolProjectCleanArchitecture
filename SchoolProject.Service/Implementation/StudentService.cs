@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolProject.Data.Entities;
+using SchoolProject.Data.Helper.Enums;
 using SchoolProject.Infrastructure.Abstract;
 using SchoolProject.Service.Abstract;
 
@@ -19,6 +20,7 @@ namespace SchoolProject.Service.Implementation
 
 
         #endregion
+
         #region Methods
 
         public async Task<Student> GetStudentByIdAsync(int id)
@@ -83,6 +85,37 @@ namespace SchoolProject.Service.Implementation
                 return false;
             }
 
+        }
+
+        public IQueryable<Student> GetPaginatedStudentListAsync()
+        {
+            return _studentRepository.GetTableNoTracking().Include(x => x.Department).AsQueryable();
+        }
+
+        public IQueryable<Student> FilterStudentPaginatedQuerable(StudentOrderingEnum? orderingEnum, string search)
+        {
+            var querable = _studentRepository.GetTableNoTracking().Include(x => x.Department).AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                querable = querable.Where(x => x.Name.Contains(search) || x.Address.Contains(search) || x.Department.DName.Contains(search));
+            }
+            switch (orderingEnum)
+            {
+                case StudentOrderingEnum.Name:
+                    querable = querable.OrderBy(x => x.Name);
+                    break;
+                case StudentOrderingEnum.Address:
+                    querable = querable.OrderBy(x => x.Address);
+                    break;
+                case StudentOrderingEnum.DepartmentName:
+                    querable = querable.OrderBy(x => x.Department.DName);
+                    break;
+                default:
+                    querable = querable.OrderBy(x => x.StudID);
+                    break;
+            }
+
+            return querable;
         }
         #endregion
 

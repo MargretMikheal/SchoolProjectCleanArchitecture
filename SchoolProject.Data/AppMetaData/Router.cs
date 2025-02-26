@@ -14,6 +14,7 @@
             public const string Add = Prefix + "/AddStudent";
             public const string Edit = Prefix + "/EditStudent";
             public const string Delete = Prefix + "/{id}";
+            public const string Paginated = Prefix + "/Paginated";
         }
 
     }
