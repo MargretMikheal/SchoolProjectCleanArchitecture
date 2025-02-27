@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Localization;
+using SchoolProject.Api.Resources;
 using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.Students.Queries.Models;
 using SchoolProject.Core.Features.Students.Queries.Results;
@@ -8,20 +10,23 @@ using SchoolProject.Data.Entities;
 using SchoolProject.Service.Abstract;
 using System.Linq.Expressions;
 
+
 namespace SchoolProject.Core.Features.Students.Queries.Handlers
 {
     public class StudentQueryHandler : ResponseHandler,
-        IRequestHandler<GetStudentListQuery, Response<List<GetStudentListResponse>>>,
-        IRequestHandler<GetStudentByIdQuery, Response<GetStudentResponse>>,
-        IRequestHandler<GetStudentPaginatedListQuery, PaginatedResult<GetStudentPaginatedListResponse>>
+            IRequestHandler<GetStudentListQuery, Response<List<GetStudentListResponse>>>,
+            IRequestHandler<GetStudentByIdQuery, Response<GetStudentResponse>>,
+            IRequestHandler<GetStudentPaginatedListQuery, PaginatedResult<GetStudentPaginatedListResponse>>
     {
         #region Fields
         private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<SharedResources> _localizer;
         #endregion
 
         #region Ctor
-        public StudentQueryHandler(IStudentService studentService, IMapper mapper)
+        public StudentQueryHandler(IStudentService studentService, IMapper mapper, IStringLocalizer<SharedResources> localizer)
+            : base(localizer)
         {
             _studentService = studentService;
             _mapper = mapper;
@@ -41,7 +46,7 @@ namespace SchoolProject.Core.Features.Students.Queries.Handlers
             var student = await _studentService.GetStudentByIdAsync(request.Id);
             if (student == null)
             {
-                return NotFound<GetStudentResponse>();
+                return NotFound<GetStudentResponse>(_localizer[SharedResourcesKeys.NotFound]);
             }
             var studentMapper = _mapper.Map<GetStudentResponse>(student);
             return Success(studentMapper);
@@ -52,12 +57,11 @@ namespace SchoolProject.Core.Features.Students.Queries.Handlers
             Expression<Func<Student, GetStudentPaginatedListResponse>> expression = x => new GetStudentPaginatedListResponse
             (
                 x.StudID,
-                x.Name,
+                x.NameAr,
                 x.Address,
-                x.Department != null ? x.Department.DName : null
+                x.Department != null ? x.Department.DNameAr : null
             );
 
-            //var querable = _studentService.GetPaginatedStudentListAsync();
             var FilterQuery = _studentService.FilterStudentPaginatedQuerable(request.OrderBy, request.Search);
             var paginatedList = await FilterQuery.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
             return paginatedList;

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Localization;
+using SchoolProject.Api.Resources;
 using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.Students.Command.Models;
 using SchoolProject.Data.Entities;
@@ -8,8 +10,8 @@ using SchoolProject.Service.Abstract;
 namespace SchoolProject.Core.Features.Students.Command.Handlers
 {
     public class StudentCommandHandler : ResponseHandler, IRequestHandler<AddStudentCommand, Response<string>>
-                                                        , IRequestHandler<EditStudentCommand, Response<string>>
-                                                        , IRequestHandler<DeleteStudentCommand, Response<string>>
+                                                            , IRequestHandler<EditStudentCommand, Response<string>>
+                                                            , IRequestHandler<DeleteStudentCommand, Response<string>>
     {
         #region Fields
         public IStudentService _studentService;
@@ -17,7 +19,9 @@ namespace SchoolProject.Core.Features.Students.Command.Handlers
         #endregion
 
         #region Ctor
-        public StudentCommandHandler(IStudentService studentService, IMapper mapper)
+        public StudentCommandHandler(IStudentService studentService,
+            IMapper mapper,
+            IStringLocalizer<SharedResources> localizer) : base(localizer)
         {
             _studentService = studentService;
             _mapper = mapper;
@@ -31,13 +35,9 @@ namespace SchoolProject.Core.Features.Students.Command.Handlers
             var studentMapper = _mapper.Map<Student>(request);
             //add
             var result = await _studentService.AddAsync(studentMapper);
-            //return response
-            if (result == "Exists")
-            {
-                return UnprocessableEntity<string>();
-            }
-            else if (result == "Success")
-                return Created<string>(result);
+
+            if (result == "Success")
+                return Created<string>("");
             else
             {
                 return BadRequest<string>();

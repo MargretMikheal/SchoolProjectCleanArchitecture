@@ -9,7 +9,8 @@ namespace SchoolProject.Core.Mapping.Students
         public void GetStudentByIdMapping()
         {
             CreateMap<Student, GetStudentResponse>()
-                .ForMember(dest => dest.DepartmentName, memberOptions => memberOptions.MapFrom(src => src.Department.DName));
+                .ForMember(dest => dest.DepartmentName, memberOptions => memberOptions.MapFrom(src => src.Department.DNameAr))
+                .ForMember(dest => dest.Name, memberOptions => memberOptions.MapFrom(src => src.Localize(src.NameAr, src.NameEn)));
         }
     }
 }

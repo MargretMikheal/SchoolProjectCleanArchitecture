@@ -44,7 +44,7 @@ namespace SchoolProject.Service.Implementation
 
         public async Task<bool> IsNameExistAsync(string name)
         {
-            var stu = await _studentRepository.GetTableNoTracking().Where(x => x.Name == name).FirstOrDefaultAsync();
+            var stu = await _studentRepository.GetTableNoTracking().Where(x => x.NameAr == name).FirstOrDefaultAsync();
             if (stu == null)
             {
                 return false;
@@ -54,7 +54,7 @@ namespace SchoolProject.Service.Implementation
 
         public async Task<bool> IsNameExistAsyncExcludeSelf(string name, int id)
         {
-            var stu = await _studentRepository.GetTableNoTracking().Where(x => x.Name.Equals(name) && !x.StudID.Equals(id)).FirstOrDefaultAsync();
+            var stu = await _studentRepository.GetTableNoTracking().Where(x => x.NameEn.Equals(name) && !x.StudID.Equals(id)).FirstOrDefaultAsync();
             if (stu == null)
             {
                 return false;
@@ -97,18 +97,18 @@ namespace SchoolProject.Service.Implementation
             var querable = _studentRepository.GetTableNoTracking().Include(x => x.Department).AsQueryable();
             if (!string.IsNullOrEmpty(search))
             {
-                querable = querable.Where(x => x.Name.Contains(search) || x.Address.Contains(search) || x.Department.DName.Contains(search));
+                querable = querable.Where(x => x.NameAr.Contains(search) || x.Address.Contains(search) || x.Department.DNameAr.Contains(search));
             }
             switch (orderingEnum)
             {
                 case StudentOrderingEnum.Name:
-                    querable = querable.OrderBy(x => x.Name);
+                    querable = querable.OrderBy(x => x.NameAr);
                     break;
                 case StudentOrderingEnum.Address:
                     querable = querable.OrderBy(x => x.Address);
                     break;
                 case StudentOrderingEnum.DepartmentName:
-                    querable = querable.OrderBy(x => x.Department.DName);
+                    querable = querable.OrderBy(x => x.Department.DNameAr);
                     break;
                 default:
                     querable = querable.OrderBy(x => x.StudID);
@@ -118,9 +118,6 @@ namespace SchoolProject.Service.Implementation
             return querable;
         }
         #endregion
-
-
-
 
     }
 }
