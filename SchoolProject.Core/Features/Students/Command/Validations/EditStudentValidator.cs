@@ -16,7 +16,7 @@ namespace SchoolProject.Core.Features.Students.Command.Validations
         }
         public void ApplyValidationRules()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("{PropertyName} is required");
+            RuleFor(x => x.NameAr).NotEmpty().WithMessage("{PropertyName} is required");
             RuleFor(x => x.Address).NotEmpty().WithMessage("{PropertyName} is required");
             RuleFor(x => x.Phone).NotEmpty().WithMessage("{PropertyName} is required");
             RuleFor(x => x.DepartmentID).NotEmpty().WithMessage("Department is required");
@@ -24,12 +24,12 @@ namespace SchoolProject.Core.Features.Students.Command.Validations
         public void ApplyCustomValidationRules()
         {
             RuleFor(x => x.Phone).Matches(@"^\d{11}$").WithMessage("Phone number must be 11 digits");
-            RuleFor(x => x.Name).MustAsync(async (name, cancellation) =>
+            RuleFor(x => x.NameAr).MustAsync(async (name, cancellation) =>
             {
                 return await Task.FromResult(name.Length > 3);
             }).WithMessage("Name must be more than 3 characters");
 
-            RuleFor(x => x.Name).MustAsync(async (model, name, cancellation) =>
+            RuleFor(x => x.NameAr).MustAsync(async (model, name, cancellation) =>
             {
                 return !await _studentService.IsNameExistAsyncExcludeSelf(name, model.Id);
             }).WithMessage("Exists");

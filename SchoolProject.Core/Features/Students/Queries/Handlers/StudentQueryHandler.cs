@@ -38,7 +38,8 @@ namespace SchoolProject.Core.Features.Students.Queries.Handlers
         {
             var studentList = await _studentService.GetStudentListAsync();
             var studentListMapper = _mapper.Map<List<GetStudentListResponse>>(studentList);
-            return Success(studentListMapper);
+
+            return Success(studentListMapper, new { TotalCount = studentList.Count });
         }
 
         public async Task<Response<GetStudentResponse>> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
@@ -57,13 +58,14 @@ namespace SchoolProject.Core.Features.Students.Queries.Handlers
             Expression<Func<Student, GetStudentPaginatedListResponse>> expression = x => new GetStudentPaginatedListResponse
             (
                 x.StudID,
-                x.NameAr,
+                x.Localize(x.NameAr, x.NameEn),
                 x.Address,
-                x.Department != null ? x.Department.DNameAr : null
+                x.Department != null ? x.Department.Localize(x.Department.DNameAr, x.Department.DNameEn) : null
             );
 
             var FilterQuery = _studentService.FilterStudentPaginatedQuerable(request.OrderBy, request.Search);
             var paginatedList = await FilterQuery.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+            paginatedList.Meta = new { Count = paginatedList.TotalCount };
             return paginatedList;
         }
         #endregion

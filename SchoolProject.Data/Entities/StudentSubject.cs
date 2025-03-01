@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolProject.Data.Entities
 {
     public class StudentSubject
     {
+        //public int StudSubID { get; set; }
+
         [Key]
-        public int StudSubID { get; set; }
         public int StudID { get; set; }
+        [Key]
         public int SubID { get; set; }
 
+        public decimal? Grade { get; set; }
+
         [ForeignKey("StudID")]
-        public virtual Student Student { get; set; }
+        [InverseProperty(nameof(Student.StudentSubjects))]
+        public virtual Student? Student { get; set; }
 
         [ForeignKey("SubID")]
-        public virtual Subject Subject { get; set; }
+        [InverseProperty(nameof(Subject.StudentsSubjects))]
+        public virtual Subject? Subject { get; set; }
 
     }
 }

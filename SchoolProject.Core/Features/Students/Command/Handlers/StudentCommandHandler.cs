@@ -53,7 +53,7 @@ namespace SchoolProject.Core.Features.Students.Command.Handlers
                 return NotFound<string>();
             }
             //mapping Between request and Student
-            var studentMapper = _mapper.Map<Student>(request);
+            var studentMapper = _mapper.Map(request, student);
             //edit
             var result = await _studentService.EditAsync(studentMapper);
             //return response
