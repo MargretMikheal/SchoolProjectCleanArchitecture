@@ -1,6 +1,8 @@
-﻿namespace SchoolProject.Data.Entities
+﻿using SchoolProject.Data.Commons;
+
+namespace SchoolProject.Data.Entities
 {
-    public class Instructor
+    public class Instructor : GeneralLocalizableEntity
     {
         public Instructor()
         {

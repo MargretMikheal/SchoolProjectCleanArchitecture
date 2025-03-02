@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Departments\Commands\" />
-    <Folder Include="Features\Departments\Query\Handlers\" />
+    <Folder Include="Mapping\Departments\CommandMapping\" />
   </ItemGroup>
 
 </Project>
