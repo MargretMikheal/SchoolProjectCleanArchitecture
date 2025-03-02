@@ -11,14 +11,16 @@ namespace SchoolProject.Core.Features.Students.Command.Validations
         #region Fields
         private readonly IStudentService _studentService;
         private readonly IStringLocalizer<SharedResources> _localizer;
+        private readonly IDepartmentService _departmentService;
         #endregion
         #region Ctor
-        public AddStudentValidator(IStudentService studentService, IStringLocalizer<SharedResources> localizer)
+        public AddStudentValidator(IStudentService studentService, IStringLocalizer<SharedResources> localizer, IDepartmentService departmentService)
         {
             _studentService = studentService;
             _localizer = localizer;
             ApplyValidationRules();
             ApplyCustomValidationRules();
+            _departmentService = departmentService;
         }
         #endregion
         #region Methods
@@ -40,6 +42,14 @@ namespace SchoolProject.Core.Features.Students.Command.Validations
             {
                 return !await _studentService.IsNameExistAsync(name);
             }).WithMessage("Exists");
+
+            When(p => p.DepartmentID != 0, () =>
+            {
+                RuleFor(p => p.DepartmentID).MustAsync(async (departmentId, cancellation) =>
+                {
+                    return await _departmentService.IsExistAsync(departmentId);
+                }).WithMessage(_localizer[SharedResourcesKeys.NotExist]);
+            });
         }
         #endregion
     }

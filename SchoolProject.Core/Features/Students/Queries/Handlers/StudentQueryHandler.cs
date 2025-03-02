@@ -64,9 +64,10 @@ namespace SchoolProject.Core.Features.Students.Queries.Handlers
             );
 
             var FilterQuery = _studentService.FilterStudentPaginatedQuerable(request.OrderBy, request.Search);
+            var PL = await _mapper.ProjectTo<GetStudentPaginatedListResponse>(FilterQuery).ToPaginatedListAsync(request.PageNumber, request.PageSize);
             var paginatedList = await FilterQuery.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
-            paginatedList.Meta = new { Count = paginatedList.TotalCount };
-            return paginatedList;
+            paginatedList.Meta = new { Count = PL.TotalCount };
+            return PL;
         }
         #endregion
     }
