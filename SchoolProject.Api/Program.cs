@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using SchoolProject.Core;
 using SchoolProject.Core.MiddleWare;
 using SchoolProject.Infrastructure;
-using SchoolProject.Infrastructure.Data;
 using SchoolProject.Service;
 using System.Globalization;
 
@@ -62,14 +60,11 @@ namespace SchoolProject.Api
             #endregion
 
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("dbcontext"));
-            });
             #region Dependency Injection
             builder.Services.AddInfrastructureDependencies()
                 .AddServiceDependencies()
-                .AddCoreDependencies();
+                .AddCoreDependencies()
+                .AddServiceRegisteration(builder.Configuration);
             #endregion
 
             #region Localizations
