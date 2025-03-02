@@ -99,6 +99,20 @@ namespace SchoolProject.Api
 
 
             #endregion
+
+            #region CORS
+            var MyAllowSpecificOrigins = "_corsPolicy";
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+            #endregion
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -115,6 +129,7 @@ namespace SchoolProject.Api
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseHttpsRedirection();
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
