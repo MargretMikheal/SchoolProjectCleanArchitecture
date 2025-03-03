@@ -12,7 +12,7 @@ namespace SchoolProject.Infrastructure
         public static IServiceCollection AddServiceRegisteration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("CS")));
+                options.UseSqlServer(configuration.GetConnectionString("dbcontext")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {

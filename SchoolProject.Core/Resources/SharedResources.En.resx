@@ -165,4 +165,16 @@
   <data name="Updated" xml:space="preserve">
     <value>Updated</value>
   </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Passwords Do Not Match</value>
+  </data>
+  <data name="EmailAlreadyTaken" xml:space="preserve">
+    <value>Email Already Taken</value>
+  </data>
+  <data name="UserNameAlreadyTaken" xml:space="preserve">
+    <value>User Name Already Taken</value>
+  </data>
+  <data name="FailedToAddUser" xml:space="preserve">
+    <value>Failed To Add User</value>
+  </data>
 </root>

@@ -27,7 +27,7 @@ namespace SchoolProject.Core.Bases
                 Data = entity,
                 StatusCode = System.Net.HttpStatusCode.OK,
                 Succeeded = true,
-                Message = _localizer[SharedResourcesKeys.Added],
+                Message = _localizer[SharedResourcesKeys.Success],
                 Meta = Meta
             };
         }
