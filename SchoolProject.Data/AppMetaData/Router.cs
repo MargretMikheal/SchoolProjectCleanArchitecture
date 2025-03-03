@@ -26,6 +26,16 @@
             public const string Delete = Prefix + "/{id}";
             public const string Paginated = Prefix + "/Paginated";
         }
+        public static class UserRouting
+        {
+            public const string Prefix = rule + "User";
+            public const string List = Prefix + "/AllUsers";
+            public const string byId = Prefix + "/{id}";
+            public const string Add = Prefix + "/AddUser";
+            public const string Edit = Prefix + "/EditUser";
+            public const string Delete = Prefix + "/{id}";
+            public const string Paginated = Prefix + "/Paginated";
+        }
 
     }
 }

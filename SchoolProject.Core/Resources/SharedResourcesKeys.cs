@@ -19,6 +19,10 @@
         public const string InvalidCredentials = "InvalidCredentials";
         public const string Created = "Created";
         public const string NotExist = "NotExist";
+        public const string PasswordsDoNotMatch = "PasswordsDoNotMatch";
+        public const string EmailAlreadyTaken = "EmailAlreadyTaken";
+        public const string UserNameAlreadyTaken = "UserNameAlreadyTaken";
+        public const string FailedToAddUser = "FailedToAddUser";
     }
 
 }
