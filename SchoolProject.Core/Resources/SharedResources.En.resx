@@ -177,4 +177,10 @@
   <data name="FailedToAddUser" xml:space="preserve">
     <value>Failed To Add User</value>
   </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Password Changed</value>
+  </data>
+  <data name="ChangePassFailed" xml:space="preserve">
+    <value>Change Password Failed</value>
+  </data>
 </root>

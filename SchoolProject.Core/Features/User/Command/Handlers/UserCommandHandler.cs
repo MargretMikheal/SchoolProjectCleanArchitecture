@@ -11,6 +11,8 @@ namespace SchoolProject.Core.Features.User.Command.Handlers
 {
     public class UserCommandHandler : ResponseHandler, IRequestHandler<AddUserCommand, Response<string>>
         , IRequestHandler<UpdateUserCommand, Response<string>>
+        , IRequestHandler<DeleteUserCommand, Response<string>>
+        , IRequestHandler<ChangeUserPasswordCommand, Response<string>>
     {
         #region Fields
         private readonly IStringLocalizer<SharedResources> _localizer;
@@ -60,10 +62,6 @@ namespace SchoolProject.Core.Features.User.Command.Handlers
             {
                 return NotFound<string>(_localizer[SharedResourcesKeys.NotFound]);
             }
-            var foundByEmail = await _userManager.FindByEmailAsync(request.Email);
-            if (foundByEmail != null && foundByEmail.Id != request.UserId)
-                return BadRequest<string>(_localizer[SharedResourcesKeys.EmailAlreadyTaken]);
-
 
             // Check if new UserName exists with another User
             var foundByUserName = await _userManager.FindByNameAsync(request.UserName);
@@ -77,6 +75,35 @@ namespace SchoolProject.Core.Features.User.Command.Handlers
             //message
             if (!result.Succeeded) return BadRequest<string>(_localizer[SharedResourcesKeys.BadRequest]);
             return Success("");
+        }
+
+        public async Task<Response<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        {
+            //Check if the Id exist
+            var user = await _userManager.FindByIdAsync(request.Id);
+            //notfound
+            if (user == null)
+                return NotFound<string>(_localizer[SharedResourcesKeys.NotFound]);
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+                return BadRequest<string>(_localizer[SharedResourcesKeys.BadRequest]);
+            return Deleted<string>();
+        }
+
+        public async Task<Response<string>> Handle(ChangeUserPasswordCommand request, CancellationToken cancellationToken)
+        {
+            //get User
+            var user = await _userManager.FindByIdAsync(request.UserId);
+            //notfound
+            if (user == null)
+                return NotFound<string>(_localizer[SharedResourcesKeys.NotFound]);
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+            if (!result.Succeeded)
+                return BadRequest<string>(_localizer[SharedResourcesKeys.ChangePassFailed]);
+            return Success<string>(_localizer[SharedResourcesKeys.PasswordChanged]);
+
         }
 
 

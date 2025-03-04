@@ -23,6 +23,8 @@
         public const string EmailAlreadyTaken = "EmailAlreadyTaken";
         public const string UserNameAlreadyTaken = "UserNameAlreadyTaken";
         public const string FailedToAddUser = "FailedToAddUser";
-    }
+        public const string PasswordChanged = "PasswordChanged";
+        public const string ChangePassFailed = "ChangePassFailed";
 
+    }
 }

@@ -19,6 +19,7 @@ namespace SchoolProject.Infrastructure
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultProvider;
                 options.SignIn.RequireConfirmedEmail = false;
                 options.User.RequireUniqueEmail = true;
+
                 options.Password.RequireDigit = false;
                 options.Password.RequiredUniqueChars = 0;
                 options.Password.RequireLowercase = false;
