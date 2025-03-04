@@ -10,6 +10,7 @@ using SchoolProject.Data.Entities.Identity;
 namespace SchoolProject.Core.Features.User.Command.Handlers
 {
     public class UserCommandHandler : ResponseHandler, IRequestHandler<AddUserCommand, Response<string>>
+        , IRequestHandler<UpdateUserCommand, Response<string>>
     {
         #region Fields
         private readonly IStringLocalizer<SharedResources> _localizer;
@@ -49,6 +50,36 @@ namespace SchoolProject.Core.Features.User.Command.Handlers
             }
             return UnprocessableEntity<string>(identityResult.Errors.FirstOrDefault().Description);
         }
+
+        public async Task<Response<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        {
+            //Check if User exist
+            var oldUser = await _userManager.FindByIdAsync(request.UserId);
+            //notfound
+            if (oldUser == null)
+            {
+                return NotFound<string>(_localizer[SharedResourcesKeys.NotFound]);
+            }
+            var foundByEmail = await _userManager.FindByEmailAsync(request.Email);
+            if (foundByEmail != null && foundByEmail.Id != request.UserId)
+                return BadRequest<string>(_localizer[SharedResourcesKeys.EmailAlreadyTaken]);
+
+
+            // Check if new UserName exists with another User
+            var foundByUserName = await _userManager.FindByNameAsync(request.UserName);
+            if (foundByUserName != null && foundByUserName.Id != request.UserId)
+                return BadRequest<string>(_localizer[SharedResourcesKeys.UserNameAlreadyTaken]);
+
+            //mapping
+            var udpatedUser = _mapper.Map(request, oldUser);
+            //result is success
+            var result = await _userManager.UpdateAsync(udpatedUser);
+            //message
+            if (!result.Succeeded) return BadRequest<string>(_localizer[SharedResourcesKeys.BadRequest]);
+            return Success("");
+        }
+
+
         #endregion
     }
 }
