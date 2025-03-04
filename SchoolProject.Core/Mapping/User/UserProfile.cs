@@ -10,6 +10,7 @@ namespace SchoolProject.Core.Mapping.User
             GetUserPaginatedListMapping();
             GetUserByIdMapping();
             UpdateUserMapping();
+            ChangeUserPasswordMapping();
         }
     }
 }
