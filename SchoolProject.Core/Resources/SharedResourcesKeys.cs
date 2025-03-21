@@ -25,6 +25,13 @@
         public const string FailedToAddUser = "FailedToAddUser";
         public const string PasswordChanged = "PasswordChanged";
         public const string ChangePassFailed = "ChangePassFailed";
+        public const string InvalidAlgorithm = "InvalidAlgorithm";
+        public const string TokenHasNotExpiredYet = "TokenHasNotExpiredYet";
+        public const string UserIsNotFound = "UserIsNotFound";
+        public const string RefreshTokenIsNotFound = "RefreshTokenIsNotFound";
+        public const string RefreshTokenExpired = "RefreshTokenExpired";
+        public const string InvalidToken = "InvalidToken";
+
 
     }
 }

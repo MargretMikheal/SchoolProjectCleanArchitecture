@@ -19,6 +19,7 @@ namespace SchoolProject.Infrastructure.Data
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
