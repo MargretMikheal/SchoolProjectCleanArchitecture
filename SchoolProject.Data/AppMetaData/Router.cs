@@ -38,5 +38,13 @@
             public const string ChangePassword = Prefix + "/ChangePassword";
         }
 
+        public static class AuthenticationRouting
+        {
+            public const string Prefix = "Authentication";
+            public const string SignIn = Prefix + "/SignIn";
+            public const string RefreshToken = Prefix + "/RefreshToken";
+            public const string ValidateToken = Prefix + "/ValidateToken";
+        }
+
     }
 }

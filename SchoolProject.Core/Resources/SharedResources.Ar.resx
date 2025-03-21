@@ -189,4 +189,22 @@
   <data name="ChangePassFailed" xml:space="preserve">
     <value>فشل تغير كلمه المرور</value>
   </data>
+  <data name="InvalidAlgorithm" xml:space="preserve">
+    <value>هناك خطأ في الخوارزميه المستخدمه في التشفير</value>
+  </data>
+  <data name="TokenHasNotExpiredYet" xml:space="preserve">
+    <value>رمز الوصول ليس منتهي</value>
+  </data>
+  <data name="RefreshTokenIsNotFound" xml:space="preserve">
+    <value>رمز التنشيط غير موجود</value>
+  </data>
+  <data name="RefreshTokenExpired" xml:space="preserve">
+    <value>رمز التنشيط انتهي</value>
+  </data>
+  <data name="UserIsNotFound" xml:space="preserve">
+    <value>المستخدم غير متوفر</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>خطأ في رمز الوصول</value>
+  </data>
 </root>
