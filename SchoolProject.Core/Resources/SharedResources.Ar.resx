@@ -207,4 +207,16 @@
   <data name="InvalidToken" xml:space="preserve">
     <value>خطأ في رمز الوصول</value>
   </data>
+  <data name="RoleUsed" xml:space="preserve">
+    <value>مستخدمه من مستخدمين</value>
+  </data>
+  <data name="FailedToUpdate" xml:space="preserve">
+    <value>فشل في التعديل</value>
+  </data>
+  <data name="FailedToAddNewValue" xml:space="preserve">
+    <value>فشل في اضافه قيم جديده</value>
+  </data>
+  <data name="FailedToRemoveOldValues" xml:space="preserve">
+    <value>فشل في حذف القيم القديمه</value>
+  </data>
 </root>

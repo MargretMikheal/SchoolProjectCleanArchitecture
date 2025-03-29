@@ -5,7 +5,7 @@ using SchoolProject.Api.Resources;
 using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.Authentication.Command.Models;
 using SchoolProject.Data.Entities.Identity;
-using SchoolProject.Data.Helper;
+using SchoolProject.Data.Helper.Dtos;
 using SchoolProject.Service.Abstract;
 
 namespace SchoolProject.Core.Features.Authentication.Command.Handler
@@ -39,7 +39,7 @@ namespace SchoolProject.Core.Features.Authentication.Command.Handler
             //Try To sign in
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
             //generate Token
-            if (signInResult.Succeeded)
+            if (!signInResult.Succeeded)
                 return BadRequest<JwtAuthResult>(_Localizer[SharedResourcesKeys.BadRequest]);
             //return result
             var result = await _authenticationService.GetJWTToken(user);

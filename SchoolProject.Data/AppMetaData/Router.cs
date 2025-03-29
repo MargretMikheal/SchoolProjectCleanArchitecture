@@ -40,11 +40,30 @@
 
         public static class AuthenticationRouting
         {
-            public const string Prefix = "Authentication";
+            public const string Prefix = rule + "Authentication";
             public const string SignIn = Prefix + "/SignIn";
             public const string RefreshToken = Prefix + "/RefreshToken";
             public const string ValidateToken = Prefix + "/ValidateToken";
         }
 
+        public static class AuthorizationRouting
+        {
+            public const string Prefix = rule + "Authorization";
+            public const string Role = Prefix + "/Role";
+            public const string Claim = Prefix + "/Claim";
+
+
+            public const string AddRole = Role + "/AddRole";
+            public const string EditRole = Role + "/EditRole";
+            public const string DeleteRole = Role + "/{Id}";
+            public const string GetAll = Role + "/GetAll";
+            public const string GetById = Role + "/{Id}";
+            public const string UserRoles = Role + "/UserRoles/{Id}";
+            public const string UpdateUserRoles = Role + "/UpdateUserRoles";
+
+
+            public const string UserClaims = Claim + "/UserClaims/{Id}";
+            public const string UpdateUserClaims = Claim + "/UpdateUserClaims";
+        }
     }
 }

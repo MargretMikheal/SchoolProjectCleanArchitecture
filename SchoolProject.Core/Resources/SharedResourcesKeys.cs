@@ -31,7 +31,10 @@
         public const string RefreshTokenIsNotFound = "RefreshTokenIsNotFound";
         public const string RefreshTokenExpired = "RefreshTokenExpired";
         public const string InvalidToken = "InvalidToken";
+        public const string RoleUsed = "RoleUsed";
 
-
+        public const string RoleUFailedToRemoveOldValues = "FailedToRemoveOldValues";
+        public const string FailedToUpdate = "FailedToUpdate";
+        public const string FailedToAddNewValue = "FailedToAddNewValue";
     }
 }

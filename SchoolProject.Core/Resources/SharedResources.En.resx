@@ -201,4 +201,16 @@
   <data name="InvalidToken" xml:space="preserve">
     <value>Invalid Token</value>
   </data>
+  <data name="RoleUsed" xml:space="preserve">
+    <value>Role Used</value>
+  </data>
+  <data name="FailedToUpdate" xml:space="preserve">
+    <value>Failed To Update </value>
+  </data>
+  <data name="FailedToAddNewValue" xml:space="preserve">
+    <value>Failed To Add New Value</value>
+  </data>
+  <data name="FailedToRemoveOldValues" xml:space="preserve">
+    <value>Failed To Remove Old Values</value>
+  </data>
 </root>
