@@ -161,6 +161,8 @@ namespace SchoolProject.Service.Implementation
         private List<Claim> GetClaims(ApplicationUser user)
         {
             List<string> roles = _userManager.GetRolesAsync(user).Result.ToList();
+            var userClaims = _userManager.GetClaimsAsync(user).Result;
+
             var claims = new List<Claim>();
 
             if (!string.IsNullOrEmpty(user.UserName))
@@ -178,6 +180,7 @@ namespace SchoolProject.Service.Implementation
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
+            claims.AddRange(userClaims);
 
             return claims;
         }

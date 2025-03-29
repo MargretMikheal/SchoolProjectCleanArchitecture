@@ -98,6 +98,21 @@ namespace SchoolProject.Infrastructure
           });
             #endregion
 
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("CreateStudent", policy =>
+                {
+                    policy.RequireClaim("Create Student", "True");
+                });
+                opt.AddPolicy("EditStudent", policy =>
+                {
+                    policy.RequireClaim("Edit Student", "True");
+                });
+                opt.AddPolicy("DeleteStudent", policy =>
+                {
+                    policy.RequireClaim("Delete Student", "True");
+                });
+            });
             return services;
         }
     }

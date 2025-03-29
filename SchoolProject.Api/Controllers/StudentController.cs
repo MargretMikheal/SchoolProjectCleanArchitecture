@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SchoolProject.Api.ApiBases;
 using SchoolProject.Core.Features.Students.Command.Models;
 using SchoolProject.Core.Features.Students.Queries.Models;
@@ -31,18 +32,21 @@ namespace SchoolProject.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize(Policy = "CreateStudent")]
         [HttpPost(Router.StudentRouting.Add)]
         public async Task<IActionResult> AddStudent([FromBody] AddStudentCommand command)
         {
             return NewResult(await _mediator.Send(command));
         }
 
+        [Authorize(Policy = "EditStudent")]
         [HttpPut(Router.StudentRouting.Edit)]
         public async Task<IActionResult> UpdateStudent([FromBody] EditStudentCommand command)
         {
             return NewResult(await _mediator.Send(command));
         }
 
+        [Authorize(Policy = "DeleteStudent")]
         [HttpDelete(Router.StudentRouting.Delete)]
         public async Task<IActionResult> DeleteStudent([FromRoute] int id)
         {
