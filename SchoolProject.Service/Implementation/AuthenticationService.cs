@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
+using SchoolProject.Data.Helper.Dtos;
 using SchoolProject.Infrastructure.Abstract;
 using SchoolProject.Service.Abstract;
 using System.IdentityModel.Tokens.Jwt;
@@ -159,14 +160,28 @@ namespace SchoolProject.Service.Implementation
 
         private List<Claim> GetClaims(ApplicationUser user)
         {
-            return new List<Claim>
+            List<string> roles = _userManager.GetRolesAsync(user).Result.ToList();
+            var claims = new List<Claim>();
+
+            if (!string.IsNullOrEmpty(user.UserName))
+                claims.Add(new Claim(nameof(UserClaimModel.UserName), user.UserName));
+            if (!string.IsNullOrEmpty(user.Email))
+                claims.Add(new Claim(nameof(UserClaimModel.Email), user.Email));
+            if (!string.IsNullOrEmpty(user.Id))
+                claims.Add(new Claim(nameof(UserClaimModel.UserId), user.Id));
+            if (!string.IsNullOrEmpty(user.PhoneNumber))
+                claims.Add(new Claim(nameof(UserClaimModel.PhoneNumber), user.PhoneNumber));
+
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+
+            foreach (var role in roles)
             {
-                new Claim(nameof(UserClaimModel.UserName), user.UserName),
-                new Claim(nameof(UserClaimModel.Email), user.Email),
-                new Claim(nameof(UserClaimModel.UserId), user.Id),
-                new Claim(nameof(UserClaimModel.PhoneNumber), user.PhoneNumber)
-            };
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            return claims;
         }
+
 
         private string GenerateRefreshTokenString()
         {

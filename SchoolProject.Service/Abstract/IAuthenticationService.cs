@@ -1,5 +1,5 @@
 ﻿using SchoolProject.Data.Entities.Identity;
-using SchoolProject.Data.Helper;
+using SchoolProject.Data.Helper.Dtos;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SchoolProject.Service.Abstract

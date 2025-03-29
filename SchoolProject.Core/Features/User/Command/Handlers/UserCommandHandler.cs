@@ -6,6 +6,7 @@ using SchoolProject.Api.Resources;
 using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.User.Command.Models;
 using SchoolProject.Data.Entities.Identity;
+using SchoolProject.Data.Helper.Enums;
 
 namespace SchoolProject.Core.Features.User.Command.Handlers
 {
@@ -48,6 +49,7 @@ namespace SchoolProject.Core.Features.User.Command.Handlers
             var identityResult = await _userManager.CreateAsync(user, request.Password);
             if (identityResult.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, RoleType.User.ToString());
                 return Created<string>(user.Id);
             }
             return UnprocessableEntity<string>(identityResult.Errors.FirstOrDefault().Description);

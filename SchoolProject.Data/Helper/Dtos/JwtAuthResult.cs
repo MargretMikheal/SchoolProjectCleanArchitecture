@@ -1,4 +1,4 @@
-﻿namespace SchoolProject.Data.Helper
+﻿namespace SchoolProject.Data.Helper.Dtos
 {
     public class JwtAuthResult
     {
