@@ -219,4 +219,31 @@
   <data name="FailedToRemoveOldValues" xml:space="preserve">
     <value>فشل في حذف القيم القديمه</value>
   </data>
+  <data name="IsNotAValidEmailAddress" xml:space="preserve">
+    <value>ليس عنوان ايميل صالح</value>
+  </data>
+  <data name="FailedToSendEmail" xml:space="preserve">
+    <value>فشل في ارسال الايميل</value>
+  </data>
+  <data name="EmailIsNotConfirmed" xml:space="preserve">
+    <value>لم يتم التأكد من صالحيه الايميل</value>
+  </data>
+  <data name="EmailNotSent" xml:space="preserve">
+    <value>فشل ارسال الايميل</value>
+  </data>
+  <data name="TryToRegisterAgain" xml:space="preserve">
+    <value>اعد التسجيل مره اخري</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>الايميل غير صالح</value>
+  </data>
+  <data name="FailedToConfirmEmail" xml:space="preserve">
+    <value>حدث خطأ اثناء تاكيد الايميل</value>
+  </data>
+  <data name="CodeIsNotValid" xml:space="preserve">
+    <value>رمز خاطئ</value>
+  </data>
+  <data name="FailedToResetPassword" xml:space="preserve">
+    <value>فشل في تغيير كلمه المرور</value>
+  </data>
 </root>

@@ -30,6 +30,7 @@ namespace SchoolProject.Infrastructure.Seeder
             };
             await _userManager.CreateAsync(user, "P@ssw0rd!");
             await _userManager.AddToRoleAsync(user, RoleType.Admin.ToString());
+            await _userManager.AddToRoleAsync(user, RoleType.User.ToString());
 
         }
     }

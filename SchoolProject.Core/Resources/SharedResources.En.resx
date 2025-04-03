@@ -213,4 +213,31 @@
   <data name="FailedToRemoveOldValues" xml:space="preserve">
     <value>Failed To Remove Old Values</value>
   </data>
+  <data name="IsNotAValidEmailAddress" xml:space="preserve">
+    <value>Is Not a Valid Email Address</value>
+  </data>
+  <data name="FailedToSendEmail" xml:space="preserve">
+    <value>Failed To Send Email</value>
+  </data>
+  <data name="EmailIsNotConfirmed" xml:space="preserve">
+    <value>Email Is Not Confirmed</value>
+  </data>
+  <data name="EmailNotSent" xml:space="preserve">
+    <value>Email Not Sent</value>
+  </data>
+  <data name="TryToRegisterAgain" xml:space="preserve">
+    <value>Try To Register Again</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Invalid Email</value>
+  </data>
+  <data name="FailedToConfirmEmail" xml:space="preserve">
+    <value>Failed To Confirm Email</value>
+  </data>
+  <data name="CodeIsNotValid" xml:space="preserve">
+    <value>Code Is Not Valid</value>
+  </data>
+  <data name="FailedToResetPassword" xml:space="preserve">
+    <value>Failed To Reset Password</value>
+  </data>
 </root>

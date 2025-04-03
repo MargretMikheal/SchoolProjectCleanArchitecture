@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using SchoolProject.Api.Resources;
 using SchoolProject.Core.Bases;
 using SchoolProject.Core.Features.User.Command.Models;
 using SchoolProject.Data.Entities.Identity;
-using SchoolProject.Data.Helper.Enums;
+using SchoolProject.Service.Abstract;
 
 namespace SchoolProject.Core.Features.User.Command.Handlers
 {
@@ -19,40 +20,38 @@ namespace SchoolProject.Core.Features.User.Command.Handlers
         private readonly IStringLocalizer<SharedResources> _localizer;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEmailService _emailService;
+        private readonly IApplicationUserService _appUserService;
         #endregion
         #region Constructor
-        public UserCommandHandler(IStringLocalizer<SharedResources> localizer, UserManager<ApplicationUser> userManager, IMapper mapper) : base(localizer)
+        public UserCommandHandler(IStringLocalizer<SharedResources> localizer, UserManager<ApplicationUser> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor, IEmailService emailService, IApplicationUserService appUserService) : base(localizer)
         {
             _localizer = localizer;
             _userManager = userManager;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+            _emailService = emailService;
+            _appUserService = appUserService;
         }
         #endregion
         #region Methods
 
         public async Task<Response<string>> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            //If Email is already taken
-            var result = await _userManager.FindByEmailAsync(request.Email);
-            if (result != null)
-            {
-                return BadRequest<string>(_localizer[SharedResourcesKeys.EmailAlreadyTaken]);
-            }
-            //If UserName is already taken
-            var result2 = await _userManager.FindByNameAsync(request.UserName);
-            if (result2 != null)
-            {
-                return BadRequest<string>(_localizer[SharedResourcesKeys.UserNameAlreadyTaken]);
-            }
             //Create User
             var user = _mapper.Map<ApplicationUser>(request);
-            var identityResult = await _userManager.CreateAsync(user, request.Password);
-            if (identityResult.Succeeded)
+            var identityResult = await _appUserService.AddUserAsync(user, request.Password);
+            switch (identityResult)
             {
-                await _userManager.AddToRoleAsync(user, RoleType.User.ToString());
-                return Created<string>(user.Id);
+                case "ErrorsInCreateUserr":
+                    return BadRequest<string>(_localizer[SharedResourcesKeys.FailedToAddUser]);
+                case "Failed":
+                    return BadRequest<string>(_localizer[SharedResourcesKeys.TryToRegisterAgain]);
+                case "Success":
+                    return Created<string>(user.Id);
             }
-            return UnprocessableEntity<string>(identityResult.Errors.FirstOrDefault().Description);
+            return BadRequest<string>(identityResult);
         }
 
         public async Task<Response<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)

@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Options;
 using SchoolProject.Core;
+using SchoolProject.Core.Filter;
 using SchoolProject.Core.MiddleWare;
 using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Infrastructure;
@@ -20,8 +24,6 @@ namespace SchoolProject.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            // builder.Services.AddOpenApi();
             builder.Services.AddEndpointsApiExplorer();
 
             #region Dependency Injection
@@ -43,11 +45,11 @@ namespace SchoolProject.Api
             {
                 List<CultureInfo> supportedCultures = new List<CultureInfo>
                 {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("de-DE"),
-                    new CultureInfo("fr-FR"),
-                    new CultureInfo("en-GB"),
-                    new CultureInfo("ar-EG"),
+                        new CultureInfo("en-US"),
+                        new CultureInfo("de-DE"),
+                        new CultureInfo("fr-FR"),
+                        new CultureInfo("en-GB"),
+                        new CultureInfo("ar-EG"),
                 };
 
                 options.DefaultRequestCulture = new RequestCulture("en-US");
@@ -70,7 +72,14 @@ namespace SchoolProject.Api
                     });
             });
             #endregion
-
+            builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            builder.Services.AddTransient<IUrlHelper>(x =>
+            {
+                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = x.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
+            builder.Services.AddTransient<AuthFilter>();
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -84,10 +93,15 @@ namespace SchoolProject.Api
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                //app.MapOpenApi();
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Galaxy Store API v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             #region Localization Middleware
             var options = app.Services.GetService<IOptions<RequestLocalizationOptions>>();

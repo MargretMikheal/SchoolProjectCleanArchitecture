@@ -12,6 +12,8 @@ namespace SchoolProject.Core.Features.Authentication.Command.Handler
 {
     public class AuthenticationCommandHandler : ResponseHandler,
         IRequestHandler<SignInCommand, Response<JwtAuthResult>>,
+        IRequestHandler<SendResetPasswordCodeCommand, Response<string>>,
+        IRequestHandler<ResetPasswordCommand, Response<string>>,
         IRequestHandler<RefreshTokenCommond, Response<JwtAuthResult>>
     {
         #region Fields
@@ -38,6 +40,9 @@ namespace SchoolProject.Core.Features.Authentication.Command.Handler
                 return BadRequest<JwtAuthResult>(_Localizer[SharedResourcesKeys.NotFound]);
             //Try To sign in
             var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+            //confimr Email
+            if (!user.EmailConfirmed)
+                return BadRequest<JwtAuthResult>(_Localizer[SharedResourcesKeys.EmailIsNotConfirmed]);
             //generate Token
             if (!signInResult.Succeeded)
                 return BadRequest<JwtAuthResult>(_Localizer[SharedResourcesKeys.BadRequest]);
@@ -69,6 +74,33 @@ namespace SchoolProject.Core.Features.Authentication.Command.Handler
             var result = await _authenticationService.GetRefreshToken(user, jwtToken, UserIdAndExpireDate.Item2, request.RefreshToken);
 
             return Success(result);
+        }
+
+        public async Task<Response<string>> Handle(SendResetPasswordCodeCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authenticationService.SendResetPasswordCode(request.Email);
+            switch (result)
+            {
+                case "ErrorInUpdateUser":
+                    return BadRequest<string>(_Localizer[SharedResourcesKeys.Error]);
+                case "FailedToSendCode":
+                    return BadRequest<string>(_Localizer[SharedResourcesKeys.FailedToSendEmail]);
+
+            }
+            return Success<string>(_Localizer[SharedResourcesKeys.Success]);
+        }
+
+        public async Task<Response<string>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authenticationService.ResetPassword(request.Email, request.Password);
+            switch (result)
+            {
+                case "ErrorInUpdateUser":
+                    return BadRequest<string>(_Localizer[SharedResourcesKeys.Error]);
+                case "FailedToResetPassword":
+                    return BadRequest<string>(_Localizer[SharedResourcesKeys.FailedToResetPassword]);
+            }
+            return Success<string>(_Localizer[SharedResourcesKeys.Success]);
         }
         #endregion
     }
