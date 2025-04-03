@@ -18,12 +18,12 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Authentication\Query\Results\" />
     <Folder Include="Features\Departments\Commands\" />
+    <Folder Include="Features\Emails\Queries\" />
     <Folder Include="Mapping\Departments\CommandMapping\" />
   </ItemGroup>
 

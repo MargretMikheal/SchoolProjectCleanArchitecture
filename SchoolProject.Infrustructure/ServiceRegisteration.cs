@@ -53,6 +53,7 @@ namespace SchoolProject.Infrastructure
                     }
                 });
             });
+
             #endregion
             #region authentication
             //JWT authentication
@@ -60,11 +61,15 @@ namespace SchoolProject.Infrastructure
             configuration.GetSection(nameof(JWT)).Bind(jwt);
             services.AddSingleton(jwt);
 
+            var emailSettings = new EmailSettings();
+            configuration.GetSection(nameof(emailSettings)).Bind(emailSettings);
+            services.AddSingleton(emailSettings);
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultProvider;
-                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedEmail = true;
                 options.User.RequireUniqueEmail = true;
 
                 options.Password.RequireDigit = false;

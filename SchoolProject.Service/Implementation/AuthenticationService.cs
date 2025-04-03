@@ -5,6 +5,7 @@ using SchoolProject.Data.Entities.Identity;
 using SchoolProject.Data.Helper;
 using SchoolProject.Data.Helper.Dtos;
 using SchoolProject.Infrastructure.Abstract;
+using SchoolProject.Infrastructure.Data;
 using SchoolProject.Service.Abstract;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,17 +16,27 @@ namespace SchoolProject.Service.Implementation
 {
     public class AuthenticationService : IAuthenticationService
     {
+        #region Fields
         private readonly JWT _jwt;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailService _emailService;
+        private readonly ApplicationDbContext _context;
+        #endregion
 
-        public AuthenticationService(JWT jwt, IRefreshTokenRepository refreshTokenRepository, UserManager<ApplicationUser> userManager)
+        #region Ctor
+        public AuthenticationService(JWT jwt, IRefreshTokenRepository refreshTokenRepository, UserManager<ApplicationUser> userManager, IEmailService emailService, ApplicationDbContext context)
         {
             _jwt = jwt;
             _refreshTokenRepository = refreshTokenRepository;
             _userManager = userManager;
+            _emailService = emailService;
+            _context = context;
         }
+        #endregion
 
+
+        #region PublicMethods
         public async Task<JwtAuthResult> GetJWTToken(ApplicationUser user)
         {
             var accessToken = GenerateJwtToken(user);
@@ -93,7 +104,72 @@ namespace SchoolProject.Service.Implementation
             return (userId, userRefreshToken.ExpirDate);
         }
 
+        public async Task<string> ConfirmEmail(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return "UserNotFound";
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (!result.Succeeded)
+                return "FailedToConfirmEmail";
+            return "Success";
+        }
+        public async Task<string> SendResetPasswordCode(string Email)
+        {
+            var trans = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(Email);
+                var generator = new Random();
+                string randomNumber = generator.Next(0, 1000000).ToString("D6");
+                user.Code = randomNumber;
+                var UpdateResult = await _userManager.UpdateAsync(user);
+                if (!UpdateResult.Succeeded)
+                    return "ErrorInUpdateUser";
+                var result = await _emailService.SendEmailAsync(Email, "Reset Password", $"Your Reset Password Code is {randomNumber}");
+                await trans.CommitAsync();
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                await trans.RollbackAsync();
+                return "FailedToSendCode";
+            }
+        }
 
+        public async Task<string> ConfirmResetPassword(string Email, string code)
+        {
+            var user = await _userManager.FindByEmailAsync(Email);
+            if (user.Code == code) return "Success";
+            return "CodeIsNotValid";
+        }
+
+        public async Task<string> ResetPassword(string Email, string password)
+        {
+            var trans = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(Email);
+                var result = await _userManager.RemovePasswordAsync(user);
+                if (!result.Succeeded)
+                    return "ErrorInUpdateUser";
+                result = await _userManager.AddPasswordAsync(user, password);
+                if (!result.Succeeded)
+                    return "ErrorInUpdateUser";
+                user.Code = null;
+                result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                    return "ErrorInUpdateUser";
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                await trans.RollbackAsync();
+                return "FailedToResetPassword";
+            }
+        }
+        #endregion
+        #region PrivateMethods
         private TokenValidationParameters GetTokenValidationParameters(string token)
         {
             return new TokenValidationParameters
@@ -199,5 +275,11 @@ namespace SchoolProject.Service.Implementation
         {
             return jwtToken.Claims.FirstOrDefault(c => c.Type == claimType)?.Value;
         }
+
+
+
+
+        #endregion
     }
+
 }

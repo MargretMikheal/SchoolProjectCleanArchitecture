@@ -36,5 +36,15 @@
         public const string RoleUFailedToRemoveOldValues = "FailedToRemoveOldValues";
         public const string FailedToUpdate = "FailedToUpdate";
         public const string FailedToAddNewValue = "FailedToAddNewValue";
+        public const string IsNotAValidEmailAddress = "IsNotAValidEmailAddress";
+        public const string FailedToSendEmail = "FailedToSendEmail";
+        public const string EmailIsNotConfirmed = "EmailIsNotConfirmed";
+        public const string EmailNotSent = "EmailNotSent";
+        public const string PasswordResetLink = "PasswordResetLink";
+        public const string TryToRegisterAgain = "TryToRegisterAgain";
+        public const string InvalidEmail = "InvalidEmail";
+        public const string FailedToConfirmEmail = "FailedToConfirmEmail";
+        public const string CodeIsNotValid = "CodeIsNotValid";
+        public const string FailedToResetPassword = "FailedToResetPassword";
     }
 }
