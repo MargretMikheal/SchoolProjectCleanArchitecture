@@ -23,7 +23,7 @@ namespace SchoolProject.Service.AuthService.Implementation
         #region Functions
         public int GetUserId()
         {
-            var userId = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == nameof(UserClaimModel.Id)).Value;
+            var userId = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(claim => claim.Type == nameof(UserClaimModel.UserId)).Value;
             if (userId == null)
             {
                 throw new UnauthorizedAccessException();

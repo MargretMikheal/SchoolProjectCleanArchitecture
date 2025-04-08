@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolProject.Data.Encryption;
 using SchoolProject.Data.Entities;
 using SchoolProject.Data.Entities.Identity;
+using SchoolProject.Data.Entities.Views;
 using SoftFluent.EntityFrameworkCore.DataEncryption;
 using System.Reflection;
 
@@ -30,6 +31,10 @@ namespace SchoolProject.Infrastructure.Data
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+
+        #region Views
+        public DbSet<ViewDepartment> ViewDepartment { get; set; }
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

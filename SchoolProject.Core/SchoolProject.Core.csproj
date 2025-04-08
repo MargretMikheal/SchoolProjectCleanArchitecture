@@ -25,6 +25,7 @@
     <Folder Include="Features\Departments\Commands\" />
     <Folder Include="Features\Emails\Queries\" />
     <Folder Include="Mapping\Departments\CommandMapping\" />
+    <Folder Include="Mapping\Instructor\QueryMapping\" />
   </ItemGroup>
 
 </Project>
