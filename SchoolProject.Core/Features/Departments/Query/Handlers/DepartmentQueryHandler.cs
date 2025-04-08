@@ -10,7 +10,8 @@ using SchoolProject.Service.Abstract;
 namespace SchoolProject.Core.Features.Departments.Query.Handlers
 {
     public class DepartmentQueryHandler : ResponseHandler,
-        IRequestHandler<GetDepartmentByIdQuery, Response<GetDepartmentByIdResponse>>
+        IRequestHandler<GetDepartmentByIdQuery, Response<GetDepartmentByIdResponse>>,
+        IRequestHandler<GetDepartmentStudentCountQuery, Response<List<GetDepartmentStudentCountResult>>>
     {
         #region Fields
         private readonly IDepartmentService _departmentService;
@@ -28,6 +29,8 @@ namespace SchoolProject.Core.Features.Departments.Query.Handlers
             _localizer = localizer;
             _mapper = mapper;
         }
+        #endregion
+        #region Methods
         public async Task<Response<GetDepartmentByIdResponse>> Handle(GetDepartmentByIdQuery request, CancellationToken cancellationToken)
         {
             //service get department by id
@@ -42,6 +45,15 @@ namespace SchoolProject.Core.Features.Departments.Query.Handlers
             //return response
             return Success(responseMapper);
         }
+
+        public async Task<Response<List<GetDepartmentStudentCountResult>>> Handle(GetDepartmentStudentCountQuery request, CancellationToken cancellationToken)
+        {
+            var response = await _departmentService.GetViewDepartmentData();
+            var responseMapper = _mapper.Map<List<GetDepartmentStudentCountResult>>(response);
+            return Success(responseMapper);
+        }
+
+
         #endregion
     }
 }
