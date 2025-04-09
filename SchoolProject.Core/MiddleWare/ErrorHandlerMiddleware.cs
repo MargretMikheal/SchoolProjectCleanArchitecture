@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Core.Bases;
+using Serilog;
 using System.Net;
 using System.Text.Json;
 
@@ -10,7 +11,6 @@ namespace SchoolProject.Core.MiddleWare
     public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;
-
         public ErrorHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -27,6 +27,7 @@ namespace SchoolProject.Core.MiddleWare
                 var response = context.Response;
                 response.ContentType = "application/json";
                 var responseModel = new Response<string>() { Succeeded = false, Message = error?.Message };
+                Log.Error(error.Message, "Something went wrong in the {Method} {Path}", context.Request, "");
                 //TODO:: cover all validation errors
                 switch (error)
                 {
